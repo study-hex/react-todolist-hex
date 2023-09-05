@@ -1,5 +1,15 @@
 # react-todolist-hex
 
+## TODOS
+
+- Router
+- [x] hashRouter
+- [x] routes
+- [x] components
+- [x] 404
+
+---
+
 ## package
 
 - [x] vitawind

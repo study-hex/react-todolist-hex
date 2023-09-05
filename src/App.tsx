@@ -9,6 +9,7 @@ import {
 import Login from './routes/Login';
 import Signup from './routes/Signup';
 import Todo from './routes/Todo';
+import NotFound from './routes/NotFound';
 
 function PublicLayout() {
   return (
@@ -20,10 +21,10 @@ function PublicLayout() {
           <Link to="/">Public Page</Link>
         </li>
         <li>
-          <Link to="/login">Public Page</Link>
+          <Link to="/login">LOGIN Page</Link>
         </li>
         <li>
-          <Link to="/signup">Public Page</Link>
+          <Link to="/signup">SIGNUP Page</Link>
         </li>
         <li>
           <Link to="/todo">Protected Page</Link>
@@ -54,6 +55,10 @@ function App(): React.ReactElement {
     {
       path: '/todo',
       element: <Todo />,
+    },
+    {
+      path: '/*',
+      element: <NotFound />,
     },
   ]);
 
