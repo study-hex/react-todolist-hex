@@ -1,22 +1,63 @@
-import React, { useState } from 'react';
+import React from 'react';
+import {
+  createHashRouter,
+  RouterProvider,
+  Link,
+  Outlet,
+} from 'react-router-dom';
 
-function App(): React.ReactElement {
-  const [count, setCount] = useState<number>(0);
+import Login from './routes/Login';
+import Signup from './routes/Signup';
+import Todo from './routes/Todo';
 
+function PublicLayout() {
   return (
-    <div className="text-center selection:bg-green-900">
-      <header className="flex min-h-screen flex-col items-center justify-center bg-[#282c34] text-white">
-        <button
-          type="button"
-          className="my-6 rounded bg-gray-300 px-2 py-2 text-[#282C34] transition-all hover:bg-gray-200"
-          onClick={() => setCount((prevCount) => prevCount + 1)}
-        >
-          count is:
-          <span className="pl-1">{count}</span>
-        </button>
-      </header>
+    <div>
+      <h1>RouterProvider</h1>
+
+      <ul>
+        <li>
+          <Link to="/">Public Page</Link>
+        </li>
+        <li>
+          <Link to="/login">Public Page</Link>
+        </li>
+        <li>
+          <Link to="/signup">Public Page</Link>
+        </li>
+        <li>
+          <Link to="/todo">Protected Page</Link>
+        </li>
+      </ul>
+
+      <Outlet />
     </div>
   );
+}
+
+function App(): React.ReactElement {
+  const router = createHashRouter([
+    {
+      path: '/',
+      element: <PublicLayout />,
+      children: [
+        {
+          path: 'signup',
+          element: <Signup />,
+        },
+        {
+          path: 'login',
+          element: <Login />,
+        },
+      ],
+    },
+    {
+      path: '/todo',
+      element: <Todo />,
+    },
+  ]);
+
+  return <RouterProvider router={router} />;
 }
 
 export default App;
