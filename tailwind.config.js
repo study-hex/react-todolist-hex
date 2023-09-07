@@ -9,7 +9,11 @@ module.exports = {
     fontFamily: {
       noto: ['Noto Sans TC', 'sans-serif'],
     },
-    extend: {},
+    extend: {
+      backgroundImage: {
+        logo: "url('/src/images/logo.svg')",
+      },
+    },
   },
   plugins: [],
 };
