@@ -4,6 +4,7 @@ import {
   RouterProvider,
   Link,
   Outlet,
+  Navigate,
 } from 'react-router-dom';
 
 import Login from './routes/Login';
@@ -49,6 +50,10 @@ function App(): React.ReactElement {
       path: '/',
       element: <PublicLayout />,
       children: [
+        {
+          index: true,
+          element: <Navigate to="signup" />,
+        },
         {
           path: 'signup',
           element: <Signup />,
