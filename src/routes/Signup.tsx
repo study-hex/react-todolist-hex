@@ -1,8 +1,11 @@
 import React from 'react';
-import { Link } from 'react-router-dom';
+import { Link, useNavigate } from 'react-router-dom';
 
 import { Formik, Form, Field } from 'formik';
 import * as Yup from 'yup';
+
+import { api } from '../helpers/api';
+import { Toast } from '../components/Toast';
 
 const SignupSchema = Yup.object().shape({
   nickname: Yup.string()
@@ -19,6 +22,8 @@ const SignupSchema = Yup.object().shape({
 });
 
 function Signup(): React.ReactElement {
+  const navigate = useNavigate();
+
   return (
     <Formik
       initialValues={{
@@ -28,16 +33,46 @@ function Signup(): React.ReactElement {
         confirmPassword: '',
       }}
       validationSchema={SignupSchema}
-      onSubmit={(values) => {
-        setTimeout(() => {
-          alert(JSON.stringify(values, null, 2));
-        }, 400);
+      onSubmit={(values, { resetForm }) => {
+        // setTimeout(() => {
+        //   alert(JSON.stringify(values, null, 2));
+        // }, 400);
 
+        const data = {
+          email: values.email,
+          password: values.password,
+          nickname: values.nickname,
+        };
+
+        api.signup(data).then((res: any) => {
+          if (!res?.status) {
+            Toast.fire({
+              icon: 'warning',
+              title: '請重新操作',
+            });
+          }
+          // end of !res?.status
+
+          if (res?.status) {
+            Toast.fire({
+              icon: 'success',
+              title: '註冊成功',
+              didClose: () => {
+                setTimeout(() => {
+                  navigate('/login');
+                }, 400);
+              },
+            });
+          }
+          // end of res?.status
+
+          resetForm();
         });
+        // end of api
       }}
     >
-      {({ errors, touched }) => (
-        <Form className="text-center">
+      {({ errors, touched, isValid, dirty }) => (
+        <Form className="text-center" id="swal-target">
           <h2 className="mb-6 text-2xl font-bold">註冊帳號</h2>
 
           <div className="mb-4 text-left">
@@ -106,7 +141,11 @@ function Signup(): React.ReactElement {
 
           <button
             type="submit"
-            className="mb-6 rounded-[10px] bg-dark px-12 py-3 font-bold text-[#fff]"
+            className={`mb-6 rounded-[10px] px-12 py-3 font-bold text-[#fff] ${
+              isValid && dirty
+                ? 'cursor-pointer bg-dark'
+                : 'cursor-not-allowed bg-light'
+            }`}
           >
             註冊帳號
           </button>
