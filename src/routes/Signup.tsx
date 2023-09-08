@@ -97,13 +97,14 @@ function Signup(): React.ReactElement {
               <Field
                 type="text"
                 name="nickname"
+                placeholder="請輸入暱稱"
                 className="w-full rounded-[10px] px-4 py-3 font-medium placeholder:text-light"
               />
-
-              {!!errors.nickname && (
-                <p className="text-error">{errors.nickname}</p>
-              )}
             </label>
+
+            {!!errors.nickname && (
+              <p className="text-error">{errors.nickname}</p>
+            )}
           </div>
 
           <div className="mb-4 text-left">
@@ -113,13 +114,11 @@ function Signup(): React.ReactElement {
               <Field
                 type="password"
                 name="password"
+                placeholder="請輸入密碼"
                 className="w-full rounded-[10px] px-4 py-3 font-medium placeholder:text-light"
               />
-
-              {!!errors.password && (
-                <p className="text-error">{errors.password}</p>
-              )}
             </label>
+
             {errors.password && touched.password && errors.password}
           </div>
 
@@ -130,13 +129,14 @@ function Signup(): React.ReactElement {
               <Field
                 type="password"
                 name="confirmPassword"
+                placeholder="請再次輸入密碼"
                 className="w-full rounded-[10px] px-4 py-3 font-medium placeholder:text-light"
               />
-
-              {!!errors.confirmPassword && (
-                <p className="text-error">{errors.confirmPassword}</p>
-              )}
             </label>
+
+            {!!errors.confirmPassword && (
+              <p className="text-error">{errors.confirmPassword}</p>
+            )}
           </div>
 
           <button

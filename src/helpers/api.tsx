@@ -36,4 +36,17 @@ const signup = async (data: object) => {
   }
 };
 
-export const api = { signup };
+const login = async (data: object) => {
+  try {
+    const res = await req.post('/users/sign_in', data);
+    if (res?.status !== 200) {
+      throw Error;
+    }
+
+    return res?.data;
+  } catch (error) {
+    handleError(error);
+  }
+};
+
+export const api = { signup, login };
