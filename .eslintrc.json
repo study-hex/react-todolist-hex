@@ -23,6 +23,21 @@
         "@typescript-eslint"
     ],
     "rules": {
+        "jsx-a11y/label-has-associated-control": [
+            2,
+            {
+                "labelComponents": [
+                    "label"
+                ],
+                "labelAttributes": [
+                    "label"
+                ],
+                "controlComponents": [
+                    "Field"
+                ],
+                "depth": 3,
+            }
+        ],
         "react/jsx-filename-extension": [
             "error",
             {
