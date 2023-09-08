@@ -7,6 +7,8 @@ import {
   Navigate,
 } from 'react-router-dom';
 
+import { AuthProvider } from './contexts/AuthContext';
+
 import Login from './routes/Login';
 import Signup from './routes/Signup';
 import Todo from './routes/Todo';
@@ -74,7 +76,11 @@ function App(): React.ReactElement {
     },
   ]);
 
-  return <RouterProvider router={router} />;
+  return (
+    <AuthProvider>
+      <RouterProvider router={router} />
+    </AuthProvider>
+  );
 }
 
 export default App;
