@@ -1,86 +1,122 @@
 import React from 'react';
 import { Link } from 'react-router-dom';
 
+import { Formik, Form, Field } from 'formik';
+import * as Yup from 'yup';
+
+const SignupSchema = Yup.object().shape({
+  nickname: Yup.string()
+    .min(0, 'Too Short!')
+    .max(50, 'Too Long!')
+    .required('Required'),
+
+  email: Yup.string().email('Invalid email').required('Required'),
+  password: Yup.string().min(6, 'Too Short!').required('Required'),
+
+  confirmPassword: Yup.string()
+    .oneOf([Yup.ref('password')], 'Passwords does not match')
+    .required('Required'),
+});
+
 function Signup(): React.ReactElement {
   return (
-    <form action="#" className="text-center">
-      <h2 className="mb-6 text-2xl font-bold">註冊帳號</h2>
+    <Formik
+      initialValues={{
+        nickname: '',
+        email: '',
+        password: '',
+        confirmPassword: '',
+      }}
+      validationSchema={SignupSchema}
+      onSubmit={(values) => {
+        setTimeout(() => {
+          alert(JSON.stringify(values, null, 2));
+        }, 400);
 
-      <div className="mb-4 text-left">
-        <label htmlFor="email" className="text-sm font-bold">
-          <p className="mb-1">Email</p>
+        });
+      }}
+    >
+      {({ errors, touched }) => (
+        <Form className="text-center">
+          <h2 className="mb-6 text-2xl font-bold">註冊帳號</h2>
 
-          <input
-            type="email"
-            name="email"
-            id="email"
-            aria-label="Email"
-            className="w-full rounded-[10px] px-4 py-3 font-medium placeholder:text-light"
-            placeholder="請輸入 Email"
-            required
-          />
-        </label>
-      </div>
+          <div className="mb-4 text-left">
+            <label htmlFor="email" className="text-sm font-bold">
+              <p className="mb-1">Email</p>
 
-      <div className="mb-4 text-left">
-        <label htmlFor="nickname" className="text-sm font-bold">
-          <p className="mb-1">您的暱稱</p>
+              <Field
+                type="email"
+                name="email"
+                placeholder="請輸入 Email"
+                className="w-full rounded-[10px] px-4 py-3 font-medium placeholder:text-light"
+              />
+            </label>
 
-          <input
-            type="text"
-            name="nickname"
-            id="nickname"
-            aria-label="nickname"
-            className="w-full rounded-[10px] px-4 py-3 font-medium placeholder:text-light"
-            placeholder="請輸入暱稱"
-            required
-          />
-        </label>
-      </div>
+            {errors.email && touched.email ? <div>{errors.email}</div> : null}
+          </div>
 
-      <div className="mb-4 text-left">
-        <label htmlFor="password" className="text-sm font-bold">
-          <p className="mb-1">密碼</p>
+          <div className="mb-4 text-left">
+            <label htmlFor="nickname" className="text-sm font-bold">
+              <p className="mb-1">您的暱稱</p>
 
-          <input
-            type="password"
-            name="password"
-            id="password"
-            aria-label="password"
-            placeholder="請輸入密碼"
-            className="w-full rounded-[10px] px-4 py-3 font-medium placeholder:text-light"
-            required
-          />
-        </label>
-      </div>
+              <Field
+                type="text"
+                name="nickname"
+                className="w-full rounded-[10px] px-4 py-3 font-medium placeholder:text-light"
+              />
 
-      <div className="mb-3 text-left">
-        <label htmlFor="confirm-password" className="text-sm font-bold">
-          <p className="mb-1">再次輸入密碼</p>
+              {!!errors.nickname && (
+                <p className="text-error">{errors.nickname}</p>
+              )}
+            </label>
+          </div>
 
-          <input
-            type="confirm-password"
-            name="confirm-password"
-            id="confirm-password"
-            aria-label="confirm-password"
-            placeholder="請再次輸入密碼"
-            className="w-full rounded-[10px] px-4 py-3 font-medium placeholder:text-light"
-            required
-          />
-        </label>
-      </div>
+          <div className="mb-4 text-left">
+            <label htmlFor="password" className="text-sm font-bold">
+              <p className="mb-1">密碼</p>
 
-      <button
-        type="submit"
-        className="mb-6 rounded-[10px] bg-dark px-12 py-3 font-bold text-[#fff]"
-      >
-        註冊帳號
-      </button>
+              <Field
+                type="password"
+                name="password"
+                className="w-full rounded-[10px] px-4 py-3 font-medium placeholder:text-light"
+              />
 
-      <Link to="/login" className="block font-bold">
-        登入
-      </Link>
-    </form>
+              {!!errors.password && (
+                <p className="text-error">{errors.password}</p>
+              )}
+            </label>
+            {errors.password && touched.password && errors.password}
+          </div>
+
+          <div className="mb-3 text-left">
+            <label htmlFor="confirm-password" className="text-sm font-bold">
+              <p className="mb-1">再次輸入密碼</p>
+
+              <Field
+                type="password"
+                name="confirmPassword"
+                className="w-full rounded-[10px] px-4 py-3 font-medium placeholder:text-light"
+              />
+
+              {!!errors.confirmPassword && (
+                <p className="text-error">{errors.confirmPassword}</p>
+              )}
+            </label>
+          </div>
+
+          <button
+            type="submit"
+            className="mb-6 rounded-[10px] bg-dark px-12 py-3 font-bold text-[#fff]"
+          >
+            註冊帳號
+          </button>
+
+          <Link to="/login" className="block font-bold">
+            登入
+          </Link>
+        </Form>
+      )}
+    </Formik>
   );
 }
 
