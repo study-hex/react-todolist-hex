@@ -16,6 +16,7 @@ import Login from './routes/Login';
 import Signup from './routes/Signup';
 import Todo from './routes/Todo';
 import NotFound from './routes/NotFound';
+import ProtectedRoute from './routes/ProtectedRoute';
 
 import ImgHero from './images/hero.webp';
 
@@ -102,7 +103,11 @@ function App(): React.ReactElement {
     },
     {
       path: '/todo',
-      element: <Todo />,
+      element: (
+        <ProtectedRoute>
+          <Todo />
+        </ProtectedRoute>
+      ),
     },
     {
       path: '/*',
