@@ -1,6 +1,4 @@
-import { useState, useMemo, useContext, createContext } from 'react';
-
-const AuthContext = createContext<IAuthContextData | undefined>(undefined);
+import { useState, useMemo, useEffect, useContext, createContext } from 'react';
 
 interface IAuthContextData {
   token: string;
@@ -11,6 +9,8 @@ interface IAuthProviderProps {
   children: React.ReactNode;
 }
 
+const AuthContext = createContext<IAuthContextData | undefined>(undefined);
+
 export function AuthProvider({ children }: IAuthProviderProps) {
   const [token, setToken] = useState('');
 
@@ -20,6 +20,17 @@ export function AuthProvider({ children }: IAuthProviderProps) {
       setToken,
     };
   }, [token, setToken]);
+
+  useEffect(() => {
+    const cookieValue = document.cookie
+      .split('; ')
+      .find((row) => row.startsWith('hexschoolTodo='))
+      ?.split('=')[1];
+
+    if (cookieValue) {
+      setToken(cookieValue);
+    }
+  }, []);
 
   return (
     <AuthContext.Provider value={authContextData}>
