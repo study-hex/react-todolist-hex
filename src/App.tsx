@@ -1,13 +1,16 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import {
   createHashRouter,
   RouterProvider,
   Link,
   Outlet,
   Navigate,
+  useNavigate,
 } from 'react-router-dom';
 
-import { AuthProvider } from './contexts/AuthContext';
+import { AuthProvider, useAuth } from './contexts/AuthContext';
+import { api } from './helpers/api';
+import { Toast } from './components/Toast';
 
 import Login from './routes/Login';
 import Signup from './routes/Signup';
@@ -17,6 +20,37 @@ import NotFound from './routes/NotFound';
 import ImgHero from './images/hero.webp';
 
 function PublicLayout() {
+  const { token } = useAuth();
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    if (token) {
+      api.check(token).then((res: any) => {
+        if (!res?.status) {
+          Toast.fire({
+            icon: 'warning',
+            title: '請重新操作',
+          });
+        }
+        // end of !res?.status
+
+        if (res?.status) {
+          Toast.fire({
+            icon: 'success',
+            title: '登入成功',
+            didClose: () => {
+              setTimeout(() => {
+                navigate('/todo');
+              }, 400);
+            },
+          });
+        }
+        // end of res?.status
+      });
+      // end of api
+    }
+  }, []);
+
   return (
     <div className="container mx-auto min-h-screen px-8 py-12 sm:flex sm:flex-wrap sm:items-center sm:justify-between lg:grid lg:grid-cols-12 lg:gap-[103px] xl:gap-[120px]">
       <header className="sm:w-full md:mx-auto md:w-[47%] lg:col-span-5 lg:col-start-2 lg:w-full">

@@ -27,7 +27,7 @@ const signup = async (data: object) => {
   try {
     const res = await req.post('/users/sign_up', data);
     if (res?.status !== 201) {
-      throw Error;
+      throw new Error();
     }
 
     return res?.data;
@@ -40,7 +40,7 @@ const login = async (data: object) => {
   try {
     const res = await req.post('/users/sign_in', data);
     if (res?.status !== 200) {
-      throw Error;
+      throw new Error();
     }
 
     return res?.data;
@@ -49,4 +49,19 @@ const login = async (data: object) => {
   }
 };
 
-export const api = { signup, login };
+const check = async (cookieValue: string) => {
+  try {
+    req.defaults.headers.common['Authorization'] = cookieValue;
+
+    const res = await req.get('/users/checkout');
+    if (res?.status !== 200) {
+      throw new Error();
+    }
+
+    return res?.data;
+  } catch (error) {
+    handleError(error);
+  }
+};
+
+export const api = { signup, login, check };
