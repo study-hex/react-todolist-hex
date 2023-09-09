@@ -1,4 +1,4 @@
-import axios from 'axios';
+import axios, { AxiosResponse } from 'axios';
 
 import { Toast } from '../components/Toast';
 
@@ -23,30 +23,45 @@ const handleError = ({ err }: any = {}) => {
   });
 };
 
-const signup = async (data: object) => {
+const signup = async (data: object): Promise<any> => {
   try {
-    const res = await req.post('/users/sign_up', data);
+    const res: AxiosResponse = await req.post('/users/sign_up', data);
     if (res?.status !== 201) {
-      throw Error;
+      throw new Error();
     }
 
     return res?.data;
-  } catch (error) {
+  } catch (error: unknown) {
     handleError(error);
   }
 };
 
-const login = async (data: object) => {
+const login = async (data: object): Promise<any> => {
   try {
-    const res = await req.post('/users/sign_in', data);
+    const res: AxiosResponse = await req.post('/users/sign_in', data);
     if (res?.status !== 200) {
-      throw Error;
+      throw new Error();
     }
 
     return res?.data;
-  } catch (error) {
+  } catch (error: unknown) {
     handleError(error);
   }
 };
 
-export const api = { signup, login };
+const check = async (cookieValue: string): Promise<any> => {
+  try {
+    req.defaults.headers.common['Authorization'] = cookieValue;
+
+    const res: AxiosResponse = await req.get('/users/checkout');
+    if (res?.status !== 200) {
+      throw new Error();
+    }
+
+    return res?.data;
+  } catch (error: unknown) {
+    handleError(error);
+  }
+};
+
+export const api = { signup, login, check };

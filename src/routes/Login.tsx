@@ -14,23 +14,9 @@ const LoginSchema = Yup.object().shape({
 });
 
 function Login(): React.ReactElement {
-  const { token, setToken } = useAuth();
+  const { saveToken } = useAuth();
 
   const navigate = useNavigate();
-
-  const saveToken = (resToken: string) => {
-    // console.log('AUTH_TOKEN:::', resToken);
-    setToken(resToken);
-    // localStorage.setItem('AUTH_TOKEN', resToken);
-
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    tomorrow.setHours(1, 0, 0, 0);
-    // const date = new Date(exp * 1000);
-    // console.log(date.toUTCString());
-
-    document.cookie = `hexschoolTodo=${resToken}; expires=${tomorrow.toUTCString()}`;
-  };
 
   return (
     <Formik
