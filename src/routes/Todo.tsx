@@ -1,5 +1,4 @@
 import React, { useEffect, useState } from 'react';
-import { useNavigate } from 'react-router-dom';
 
 import { useAuth } from '../contexts/AuthContext';
 import { api } from '../helpers/api';
@@ -8,8 +7,7 @@ import { Toast } from '../components/Toast';
 import TodoAddInput from '../components/TodoAddInput';
 import TodoTabs from '../components/TodoTabs';
 import TodoCardBody from '../components/TodoCardBody';
-
-import Logo from '../components/Logo';
+import TodoNav from '../components/TodoNav';
 
 interface ITodoData {
   content: string;
@@ -19,7 +17,6 @@ interface ITodoData {
 }
 
 function Todo(): React.ReactElement {
-  const navigate = useNavigate();
   const { token } = useAuth();
 
   const [todoData, setTodoData] = useState<ITodoData[]>([]);
@@ -27,37 +24,6 @@ function Todo(): React.ReactElement {
   const [isClickTab, setIsClickTab] = useState<string>('ALL');
   const [haveTodoLength, setHaveTodoLength] = useState<number>(0);
   const [haveClearLength, setHaveClearLength] = useState<number>(0);
-
-  const handleLogout = () => {
-    api.logout().then((res: any) => {
-      if (!res?.status) {
-        Toast.fire({
-          icon: 'warning',
-          title: '請重新操作',
-        });
-      }
-      // end of !res?.status
-
-      if (res?.status) {
-        const msg = res.message || '登出成功';
-
-        api.req.defaults.headers.common['Authorization'] = '';
-
-        Toast.fire({
-          icon: 'success',
-          title: msg,
-          didClose: () => {
-            setTimeout(() => {
-              navigate('/login');
-            }, 400);
-          },
-        });
-      }
-      // end of res?.status
-    });
-    // end of api
-  };
-  // end of handleLogout
 
   const getTodos = () => {
     api.getTodo().then((res: any) => {
@@ -167,15 +133,7 @@ function Todo(): React.ReactElement {
   return (
     <div className="min-h-screen md:bg-linear">
       <div className="container mx-auto px-8 pb-8">
-        <nav className="flex items-center justify-between gap-10 py-4">
-          <div className="w-4/5">
-            <Logo bgPosition={'bg-start'} />
-          </div>
-
-          <button type="button" className="text-sm" onClick={handleLogout}>
-            登出
-          </button>
-        </nav>
+        <TodoNav />
 
         <TodoAddInput handleAddTodo={handleAddTodo} />
 
