@@ -5,20 +5,24 @@ import { useAuth } from '../contexts/AuthContext';
 import { api } from '../helpers/api';
 import { Toast } from '../components/Toast';
 
+import Logo from '../components/Logo';
+
 import ImgHero from '../images/hero.webp';
 
 function PublicLayout(): React.ReactElement {
   const { token } = useAuth();
   const navigate = useNavigate();
+  const bgPosition = 'bg-center';
 
   useEffect(() => {
     if (token) {
       api.check(token).then((res: any) => {
         if (!res?.status) {
-          Toast.fire({
-            icon: 'warning',
-            title: '請重新操作',
-          });
+          return;
+          // Toast.fire({
+          //   icon: 'warning',
+          //   title: '請重新操作',
+          // });
         }
         // end of !res?.status
 
@@ -29,7 +33,7 @@ function PublicLayout(): React.ReactElement {
             didClose: () => {
               setTimeout(() => {
                 navigate('/todo');
-              }, 400);
+              }, 100);
             },
           });
         }
@@ -40,17 +44,11 @@ function PublicLayout(): React.ReactElement {
   }, []);
 
   return (
-    <div className="container mx-auto min-h-screen px-8 py-12 sm:flex sm:flex-wrap sm:items-center sm:justify-between lg:grid lg:grid-cols-12 lg:gap-[103px] xl:gap-[120px]">
-      <header className="sm:w-full md:mx-auto md:w-[47%] lg:col-span-5 lg:col-start-2 lg:w-full">
-        <Link
-          to="/signup"
-          className="leading-[3rem] hover:opacity-80"
-          title="TODOLIST"
-        >
-          <h1 className="mb-4 w-full overflow-hidden whitespace-nowrap bg-logo bg-[length:316px_46.9px] bg-center bg-no-repeat indent-[101%]">
-            ONLINE TODO LIST
-          </h1>
-        </Link>
+    <div className="container mx-auto min-h-screen p-8 sm:flex sm:flex-wrap sm:items-center sm:justify-between lg:grid lg:grid-cols-12 lg:gap-[103px] xl:gap-[120px]">
+      <header className="py-4 sm:w-full md:mx-auto md:w-[47%] lg:col-span-5 lg:col-start-2 lg:w-full">
+        <div className="mb-4">
+          <Logo bgPosition={bgPosition} />
+        </div>
 
         <figure className="hidden w-full lg:inline-block">
           <img

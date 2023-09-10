@@ -3,5 +3,13 @@
 @tailwind utilities;
 
 * {
-  outline: 1px solid #f73;
+  /* outline: 1px solid #f73; */
+}
+
+input:checked+.custom-check {
+  @apply border-0;
+}
+
+input:checked+.custom-check svg {
+  @apply block;
 }
