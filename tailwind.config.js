@@ -12,6 +12,7 @@ module.exports = {
       },
       backgroundImage: {
         logo: "url('/src/images/logo.svg')",
+        linear: 'linear-gradient(173deg, #FFD370 5.12%, #FFD370 53.33%, #FFD370 53.44%, #FFF 53.45%, #FFF 94.32%)',
       },
     },
   },

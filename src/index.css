@@ -5,3 +5,11 @@
 * {
   outline: 1px solid #f73;
 }
+
+input:checked+div {
+  @apply border-0;
+}
+
+input:checked+div svg {
+  @apply block;
+}
