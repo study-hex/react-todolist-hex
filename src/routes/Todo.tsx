@@ -20,10 +20,12 @@ function Todo(): React.ReactElement {
   const { token } = useAuth();
 
   const [todoData, setTodoData] = useState<ITodoData[]>([]);
+  const [filterData, setFilterData] = useState<ITodoData[]>([]);
   const newInputTodo = useInput('');
   const editInputTodo = useInput('');
 
   const [isEditId, setIsEditId] = useState<string>('');
+  const [isClickTab, setIsClickTab] = useState<string>('ALL');
 
   const handleLogout = () => {
     api.logout().then((res: any) => {
@@ -70,6 +72,7 @@ function Todo(): React.ReactElement {
     const data = {
       content: newInputTodo.value.trim(),
     };
+
     api.postTodo(data).then((res) => {
       if (!res?.status) {
         Toast.fire({
@@ -89,6 +92,7 @@ function Todo(): React.ReactElement {
 
         newInputTodo.clear();
         getTodos();
+        setIsClickTab('TODO');
       }
       // end of res?.status
     });
@@ -178,6 +182,7 @@ function Todo(): React.ReactElement {
     });
     // end of api
   };
+  // end of handleEditTodo
 
   useEffect(() => {
     if (token) {
@@ -190,6 +195,24 @@ function Todo(): React.ReactElement {
       getTodos();
     }
   }, []);
+
+  useEffect(() => {
+    setFilterData(
+      [...todoData]
+        .filter((item) => {
+          if (isClickTab === 'ALL') {
+            return true;
+          }
+          if (isClickTab === 'TODO') {
+            return !item.status;
+          }
+          if (isClickTab === 'DONE') {
+            return item.status;
+          }
+        })
+        .reverse(),
+    );
+  }, [isClickTab, todoData]);
 
   return (
     <div className="min-h-screen md:bg-linear">
@@ -242,33 +265,54 @@ function Todo(): React.ReactElement {
         </div>
 
         <main className="mx-auto flex min-h-[calc(100vh_-_170px)] max-w-[500px] flex-col rounded-[10px] bg-white text-sm">
-          <header>
+          <header className="z-10">
             <ul className="flex items-center justify-between text-center font-bold">
               <li className="w-1/3">
                 <button
                   type="button"
-                  className="w-full border-b-[1px] border-dark py-4"
+                  className={`w-full border-dark hover:text-dark ${
+                    isClickTab === 'ALL'
+                      ? 'border-b-2 pb-[14px] pt-4 text-dark'
+                      : 'py-4 text-light'
+                  } `}
+                  onClick={() => setIsClickTab('ALL')}
                 >
                   全部
                 </button>
               </li>
               <li className="w-1/3">
-                <button type="button" className="w-full py-4 text-light">
+                <button
+                  type="button"
+                  className={`w-full border-dark hover:text-dark ${
+                    isClickTab === 'TODO'
+                      ? 'border-b-2 pb-[14px] pt-4 text-dark'
+                      : 'py-4 text-light'
+                  } `}
+                  onClick={() => setIsClickTab('TODO')}
+                >
                   待完成
                 </button>
               </li>
               <li className="w-1/3">
-                <button type="button" className="w-full py-4 text-light">
+                <button
+                  type="button"
+                  className={`w-full border-dark hover:text-dark ${
+                    isClickTab === 'DONE'
+                      ? 'border-b-2 pb-[14px] pt-4 text-dark'
+                      : 'py-4 text-light'
+                  } `}
+                  onClick={() => setIsClickTab('DONE')}
+                >
                   已完成
                 </button>
               </li>
             </ul>
           </header>
 
-          <div className="-mt-[1px] flex-1 border-t-[1px] pt-6">
+          <div className="-mt-[2px] flex-1 border-t-[1px] pt-6">
             <ul className="flex flex-col gap-4">
-              {todoData &&
-                todoData.map((todo) => {
+              {filterData &&
+                filterData.map((todo) => {
                   return (
                     <li key={todo.id} className="px-4">
                       <div className="flex items-center gap-4 border-b-[1px] pb-4">
