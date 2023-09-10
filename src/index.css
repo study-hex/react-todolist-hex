@@ -13,3 +13,15 @@ input:checked+.custom-check {
 input:checked+.custom-check svg {
   @apply block;
 }
+
+::-webkit-scrollbar {
+  width: .5rem;
+}
+
+/* Handle */
+::-webkit-scrollbar-thumb {
+  @apply bg-dark border border-primary rounded-xl shadow-lg shadow-light;
+
+  -moz-border-radius: 12px;
+  -webkit-border-radius: 12px;
+}
