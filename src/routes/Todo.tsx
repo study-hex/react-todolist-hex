@@ -7,6 +7,7 @@ import { api } from '../helpers/api';
 import { Toast } from '../components/Toast';
 
 import TodoAddInput from '../components/TodoAddInput';
+import TodoTabs from '../components/TodoTabs';
 
 import Logo from '../components/Logo';
 
@@ -283,49 +284,7 @@ function Todo(): React.ReactElement {
         <TodoAddInput handleAddTodo={handleAddTodo} />
 
         <main className="mx-auto flex min-h-[calc(100vh_-_170px)] max-w-[500px] flex-col rounded-[10px] bg-white text-sm">
-          <header className="z-10">
-            <ul className="flex items-center justify-between text-center font-bold">
-              <li className="w-1/3">
-                <button
-                  type="button"
-                  className={`w-full border-dark hover:text-dark ${
-                    isClickTab === 'ALL'
-                      ? 'border-b-2 pb-[14px] pt-4 text-dark'
-                      : 'py-4 text-light'
-                  } `}
-                  onClick={() => setIsClickTab('ALL')}
-                >
-                  全部
-                </button>
-              </li>
-              <li className="w-1/3">
-                <button
-                  type="button"
-                  className={`w-full border-dark hover:text-dark ${
-                    isClickTab === 'TODO'
-                      ? 'border-b-2 pb-[14px] pt-4 text-dark'
-                      : 'py-4 text-light'
-                  } `}
-                  onClick={() => setIsClickTab('TODO')}
-                >
-                  待完成
-                </button>
-              </li>
-              <li className="w-1/3">
-                <button
-                  type="button"
-                  className={`w-full border-dark hover:text-dark ${
-                    isClickTab === 'DONE'
-                      ? 'border-b-2 pb-[14px] pt-4 text-dark'
-                      : 'py-4 text-light'
-                  } `}
-                  onClick={() => setIsClickTab('DONE')}
-                >
-                  已完成
-                </button>
-              </li>
-            </ul>
-          </header>
+          <TodoTabs isClickTab={isClickTab} setIsClickTab={setIsClickTab} />
 
           <div className="-mt-[2px] flex-1 border-t-[1px] pt-6">
             <ul className="flex flex-col gap-4">
