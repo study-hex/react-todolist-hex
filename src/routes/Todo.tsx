@@ -21,6 +21,9 @@ function Todo(): React.ReactElement {
 
   const [todoData, setTodoData] = useState<ITodoData[]>([]);
   const newInputTodo = useInput('');
+  const editInputTodo = useInput('');
+
+  const [isEditId, setIsEditId] = useState<string>('');
 
   const handleLogout = () => {
     api.logout().then((res: any) => {
@@ -104,7 +107,7 @@ function Todo(): React.ReactElement {
       // end of !res?.status
 
       if (res?.status) {
-        const msg = res.message || '新增成功';
+        const msg = res.message || '刪除成功';
 
         Toast.fire({
           icon: 'success',
@@ -118,6 +121,63 @@ function Todo(): React.ReactElement {
     // end of api
   };
   // end of handleRemoveTodo
+
+  const handleToggleTodo = (todo: ITodoData) => {
+    api.patchTodo(todo.id).then((res) => {
+      if (!res?.status) {
+        Toast.fire({
+          icon: 'warning',
+          title: '請重新操作',
+        });
+      }
+      // end of !res?.status
+
+      if (res?.status) {
+        const msg = res.message || '編輯成功';
+
+        Toast.fire({
+          icon: 'success',
+          title: msg,
+        });
+
+        getTodos();
+      }
+      // end of res?.status
+    });
+    // end of api
+  };
+  // end of handleToggleTodo
+
+  const handleEditTodo = () => {
+    const data = {
+      content: editInputTodo.value,
+    };
+
+    api.putTodo(isEditId, data).then((res) => {
+      if (!res?.status) {
+        Toast.fire({
+          icon: 'warning',
+          title: '請重新操作',
+        });
+      }
+      // end of !res?.status
+
+      if (res?.status) {
+        const msg = res.message || '編輯成功';
+
+        Toast.fire({
+          icon: 'success',
+          title: msg,
+        });
+
+        getTodos();
+      }
+      // end of res?.status
+
+      setIsEditId('');
+    });
+    // end of api
+  };
 
   useEffect(() => {
     if (token) {
@@ -218,11 +278,13 @@ function Todo(): React.ReactElement {
                             name="checkbox"
                             id="todoStatus"
                             aria-label="STATUS"
-                            value="yes"
-                            className="absolute h-5 w-5 opacity-0"
+                            className="absolute h-5 w-5 cursor-pointer opacity-0"
+                            value={`${todo.status}`}
+                            checked={todo.status}
+                            onChange={() => handleToggleTodo(todo)}
                           />
 
-                          <div className="flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-md border-2 border-primary bg-white">
+                          <div className="custom-check flex h-5 w-5 flex-shrink-0 items-center justify-center rounded-md border-[1px] border-light bg-white">
                             <svg
                               className="pointer-events-none hidden h-[18px] w-[18px] fill-current text-primary"
                               xmlns="http://www.w3.org/2000/svg"
@@ -247,14 +309,39 @@ function Todo(): React.ReactElement {
                           {/* end of custom checkbox */}
                         </label>
 
-                        <input
-                          type="text"
-                          name="content"
-                          id="todoContent"
-                          aria-label="todoContent"
-                          className="flex-1"
-                          value={todo.content}
-                        />
+                        {isEditId === todo.id ? (
+                          <input
+                            type="text"
+                            name="content"
+                            id="todoContent"
+                            aria-label="todoContent"
+                            className="relative flex-1 border-b-2 border-primary outline-none"
+                            value={editInputTodo.value}
+                            onChange={editInputTodo.onChange}
+                            onKeyDown={(e) => {
+                              if (e.key === 'Enter' || e.key === 'Escape') {
+                                handleEditTodo();
+                              }
+                            }}
+                          />
+                        ) : (
+                          <button
+                            type="button"
+                            onClick={() => {
+                              setIsEditId(todo.id);
+                              editInputTodo.setValue(todo.content);
+                            }}
+                            className="flex-1 text-start"
+                          >
+                            <span
+                              className={`${
+                                todo.status && 'text-light line-through'
+                              }`}
+                            >
+                              {todo.content}
+                            </span>
+                          </button>
+                        )}
 
                         <button
                           type="button"

@@ -122,6 +122,32 @@ const deleteTodo = async (todoId: string): Promise<any> => {
   }
 };
 
+const patchTodo = async (todoId: string): Promise<any> => {
+  try {
+    const res: AxiosResponse = await req.patch(`/todos/${todoId}/toggle`);
+    if (res?.status !== 200) {
+      throw new Error();
+    }
+
+    return res?.data;
+  } catch (error: unknown) {
+    handleError(error);
+  }
+};
+
+const putTodo = async (todoId: string, data: object): Promise<any> => {
+  try {
+    const res: AxiosResponse = await req.put(`/todos/${todoId}`, data);
+    if (res?.status !== 200) {
+      throw new Error();
+    }
+
+    return res?.data;
+  } catch (error: unknown) {
+    handleError(error);
+  }
+};
+
 export const api = {
   req,
   signup,
@@ -131,4 +157,6 @@ export const api = {
   getTodo,
   postTodo,
   deleteTodo,
+  patchTodo,
+  putTodo,
 };

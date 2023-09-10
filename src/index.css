@@ -6,10 +6,10 @@
   /* outline: 1px solid #f73; */
 }
 
-input:checked+div {
+input:checked+.custom-check {
   @apply border-0;
 }
 
-input:checked+div svg {
+input:checked+.custom-check svg {
   @apply block;
 }

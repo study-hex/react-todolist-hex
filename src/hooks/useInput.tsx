@@ -7,6 +7,6 @@ export const useInput = (initValue: string) => {
     setValue(event.target.value);
   };
 
-  return { value, onChange: handleChange, clear: () => setValue('') };
+  return { value, setValue, onChange: handleChange, clear: () => setValue('') };
 };
 // end of useInput()
