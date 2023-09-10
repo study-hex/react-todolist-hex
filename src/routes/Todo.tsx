@@ -6,6 +6,8 @@ import { useInput } from '../hooks/useInput';
 import { api } from '../helpers/api';
 import { Toast } from '../components/Toast';
 
+import TodoAddInput from '../components/TodoAddInput';
+
 import Logo from '../components/Logo';
 
 interface ITodoData {
@@ -21,7 +23,7 @@ function Todo(): React.ReactElement {
 
   const [todoData, setTodoData] = useState<ITodoData[]>([]);
   const [filterData, setFilterData] = useState<ITodoData[]>([]);
-  const newInputTodo = useInput('');
+  // const newInputTodo = useInput('');
   const editInputTodo = useInput('');
 
   const [isEditId, setIsEditId] = useState<string>('');
@@ -70,9 +72,10 @@ function Todo(): React.ReactElement {
   };
   // end of getTodos()
 
-  const handleAddTodo = () => {
+  const handleAddTodo = (newInput: string) => {
     const data = {
-      content: newInputTodo.value.trim(),
+      content: newInput,
+      // content: newInputTodo.value.trim(),
     };
 
     api.postTodo(data).then((res) => {
@@ -92,7 +95,7 @@ function Todo(): React.ReactElement {
           title: msg,
         });
 
-        newInputTodo.clear();
+        // newInputTodo.clear();
         getTodos();
         setIsClickTab('TODO');
       }
@@ -277,42 +280,7 @@ function Todo(): React.ReactElement {
           </button>
         </header>
 
-        <div className="mx-auto mb-4 flex max-w-[500px] items-center justify-between rounded-lg bg-white py-1 pl-4 pr-1 shadow">
-          <input
-            type="text"
-            name="content"
-            id="inputAddToto"
-            placeholder="新增待辦事項"
-            className="w-[83%] font-medium text-dark outline-none placeholder:text-light"
-            value={newInputTodo.value}
-            onChange={newInputTodo.onChange}
-            onKeyDown={(e) => {
-              if (e.key === 'Enter') {
-                return handleAddTodo();
-              }
-              if (e.key === 'Escape') {
-                return newInputTodo.clear();
-              }
-            }}
-          />
-
-          <button
-            type="button"
-            className="transition-border relative h-10 w-10 rounded-[10px] bg-dark duration-100 hover:border-light disabled:bg-light"
-            disabled={!newInputTodo.value}
-            onClick={handleAddTodo}
-          >
-            <p className="sr-only">ADD</p>
-            <span
-              className="absolute left-[45%] top-[20%] h-[60%] w-[12%] rounded-[10px] bg-white"
-              aria-hidden="true"
-            ></span>
-            <span
-              className="absolute left-[45%] top-[20%] h-[60%] w-[12%] rotate-90 transform rounded-[10px] bg-white"
-              aria-hidden="true"
-            ></span>
-          </button>
-        </div>
+        <TodoAddInput handleAddTodo={handleAddTodo} />
 
         <main className="mx-auto flex min-h-[calc(100vh_-_170px)] max-w-[500px] flex-col rounded-[10px] bg-white text-sm">
           <header className="z-10">
