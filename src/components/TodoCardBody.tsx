@@ -131,8 +131,8 @@ function TodoCardBody(props: ITodoCardBodyProps): React.ReactElement {
   }, [isClickTab, todoData]);
 
   return (
-    <div className="-mt-[2px] flex-1 border-t-[1px] pt-6">
-      <ul className="flex flex-col gap-4 px-4">
+    <div className="-mt-[2px] flex-1 overflow-y-scroll border-t-[1px] pt-6">
+      <ul className="flex h-32 flex-col gap-4 px-4 scrollbar-thin scrollbar-track-light scrollbar-thumb-dark">
         {!filterData.length && (
           <li className="text-center text-xl">
             <p>目前沒有資料 \(^Д^)/</p>
