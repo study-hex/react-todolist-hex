@@ -3,7 +3,7 @@
 @tailwind utilities;
 
 * {
-  outline: 1px solid #f73;
+  /* outline: 1px solid #f73; */
 }
 
 input:checked+div {

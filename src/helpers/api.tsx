@@ -83,10 +83,30 @@ const logout = async (): Promise<any> => {
   }
 };
 
+const getTodo = async (): Promise<any> => {
+  try {
+    const res: AxiosResponse = await req.get('/todos');
+    if (res?.status !== 200) {
+      throw new Error();
+    }
+
     return res?.data;
   } catch (error: unknown) {
     handleError(error);
   }
 };
 
-export const api = { req, signup, login, check, logout };
+const postTodo = async (data: object): Promise<any> => {
+  try {
+    const res: AxiosResponse = await req.post('/todos', data);
+    if (res?.status !== 201) {
+      throw new Error();
+    }
+
+    return res?.data;
+  } catch (error: unknown) {
+    handleError(error);
+  }
+};
+
+export const api = { req, signup, login, check, logout, getTodo, postTodo };
