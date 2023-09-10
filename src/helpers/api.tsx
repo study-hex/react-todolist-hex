@@ -51,9 +51,28 @@ const login = async (data: object): Promise<any> => {
 
 const check = async (cookieValue: string): Promise<any> => {
   try {
-    req.defaults.headers.common['Authorization'] = cookieValue;
+    // if (cookieValue) {
+    //   req.defaults.headers.common['Authorization'] = cookieValue;
+    // }
 
     const res: AxiosResponse = await req.get('/users/checkout');
+    if (res?.status !== 200) {
+      throw new Error();
+    }
+
+    return res?.data;
+  } catch (error: any) {
+    if (error?.status === 400) {
+      return;
+    }
+
+    handleError(error);
+  }
+};
+
+const logout = async (): Promise<any> => {
+  try {
+    const res: AxiosResponse = await req.post('/users/sign_out');
     if (res?.status !== 200) {
       throw new Error();
     }
@@ -64,4 +83,10 @@ const check = async (cookieValue: string): Promise<any> => {
   }
 };
 
-export const api = { signup, login, check };
+    return res?.data;
+  } catch (error: unknown) {
+    handleError(error);
+  }
+};
+
+export const api = { req, signup, login, check, logout };

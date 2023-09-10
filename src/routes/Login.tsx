@@ -45,6 +45,8 @@ function Login(): React.ReactElement {
           // end of !res?.status
 
           if (res?.status) {
+            api.req.defaults.headers.common['Authorization'] = res?.token;
+
             Toast.fire({
               icon: 'success',
               title: '登入成功',

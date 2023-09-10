@@ -18,10 +18,11 @@ function PublicLayout(): React.ReactElement {
     if (token) {
       api.check(token).then((res: any) => {
         if (!res?.status) {
-          Toast.fire({
-            icon: 'warning',
-            title: '請重新操作',
-          });
+          return;
+          // Toast.fire({
+          //   icon: 'warning',
+          //   title: '請重新操作',
+          // });
         }
         // end of !res?.status
 
