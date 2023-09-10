@@ -93,6 +93,32 @@ function Todo(): React.ReactElement {
   };
   // end of handleAddTodo
 
+  const handleRemoveTodo = (todo: ITodoData) => {
+    api.deleteTodo(todo.id).then((res) => {
+      if (!res?.status) {
+        Toast.fire({
+          icon: 'warning',
+          title: '請重新操作',
+        });
+      }
+      // end of !res?.status
+
+      if (res?.status) {
+        const msg = res.message || '新增成功';
+
+        Toast.fire({
+          icon: 'success',
+          title: msg,
+        });
+
+        getTodos();
+      }
+      // end of res?.status
+    });
+    // end of api
+  };
+  // end of handleRemoveTodo
+
   useEffect(() => {
     if (token) {
       api.req.defaults.headers.common['Authorization'] = token;
@@ -230,7 +256,13 @@ function Todo(): React.ReactElement {
                           value={todo.content}
                         />
 
-                        <button type="button">&times;</button>
+                        <button
+                          type="button"
+                          onClick={() => handleRemoveTodo(todo)}
+                          className="hover:scale-125"
+                        >
+                          &times;
+                        </button>
                       </div>
                     </li>
                   );
