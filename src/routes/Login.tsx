@@ -106,7 +106,7 @@ function Login(): React.ReactElement {
 
             <button
               type="submit"
-              className={`mb-6 rounded-[10px] px-12 py-3 font-bold text-[#fff] ${
+              className={`mb-6 rounded-[10px] px-12 py-3 font-bold text-white ${
                 isValid && dirty
                   ? 'cursor-pointer bg-dark'
                   : 'cursor-not-allowed bg-light'
