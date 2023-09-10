@@ -26,6 +26,8 @@ function Todo(): React.ReactElement {
 
   const [isEditId, setIsEditId] = useState<string>('');
   const [isClickTab, setIsClickTab] = useState<string>('ALL');
+  const [haveTodoLength, setHaveTodoLength] = useState<number>(0);
+  const [haveClearLength, setHaveClearLength] = useState<number>(0);
 
   const handleLogout = () => {
     api.logout().then((res: any) => {
@@ -184,6 +186,42 @@ function Todo(): React.ReactElement {
   };
   // end of handleEditTodo
 
+  const handleClearDoneTodo = () => {
+    const doneIdList = [...todoData]
+      .filter((item) => {
+        return item.status;
+      })
+      .map((todo) => {
+        return todo.id;
+      });
+
+    // console.log(doneIdList);
+
+    const deletePromises = doneIdList.map((id) => api.deleteTodo(id));
+
+    Promise.all(deletePromises)
+      .then((results) => {
+        results.forEach((result) => {
+          if (!result?.status) {
+            throw new Error();
+          }
+          const msg = result.message || '編輯成功';
+
+          Toast.fire({
+            icon: 'success',
+            title: msg,
+          });
+        });
+      })
+      .catch((error) => {
+        console.error('Error:::', error);
+      })
+      .finally(() => {
+        getTodos();
+      });
+  };
+  // end of handleClearDone
+
   useEffect(() => {
     if (token) {
       api.req.defaults.headers.common['Authorization'] = token;
@@ -211,6 +249,18 @@ function Todo(): React.ReactElement {
           }
         })
         .reverse(),
+    );
+
+    setHaveTodoLength(
+      [...todoData].filter((item) => {
+        return !item.status;
+      }).length,
+    );
+
+    setHaveClearLength(
+      [...todoData].filter((item) => {
+        return item.status;
+      }).length,
     );
   }, [isClickTab, todoData]);
 
@@ -402,12 +452,18 @@ function Todo(): React.ReactElement {
           </div>
 
           <footer className="flex items-center justify-between p-4">
-            <button type="button">
-              <span className="mr-[7px]">5</span>
+            <button type="button" onClick={() => setIsClickTab('TODO')}>
+              <span className="mr-[7px]">{haveTodoLength}</span>
               個待完成項目
             </button>
 
-            <button type="button" className="text-light">
+            <button
+              type="button"
+              className={`text-light transition duration-150 ease-linear ${
+                !haveClearLength ? 'cursor-not-allowed' : 'hover:scale-105'
+              }`}
+              onClick={handleClearDoneTodo}
+            >
               清除已完成項目
             </button>
           </footer>

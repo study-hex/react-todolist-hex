@@ -33,7 +33,7 @@ function PublicLayout(): React.ReactElement {
             didClose: () => {
               setTimeout(() => {
                 navigate('/todo');
-              }, 400);
+              }, 100);
             },
           });
         }

@@ -51,11 +51,10 @@ const login = async (data: object): Promise<any> => {
 
 const check = async (cookieValue: string): Promise<any> => {
   try {
-    // if (cookieValue) {
-    //   req.defaults.headers.common['Authorization'] = cookieValue;
-    // }
+    req.defaults.headers.common['Authorization'] = cookieValue;
 
     const res: AxiosResponse = await req.get('/users/checkout');
+
     if (res?.status !== 200) {
       throw new Error();
     }
