@@ -98,7 +98,8 @@ function Todo(): React.ReactElement {
         });
       })
       .catch((error) => {
-        console.error('Error:::', error);
+        // console.error('Error:::', error);
+        api.handleError(error);
       })
       .finally(() => {
         getTodos();

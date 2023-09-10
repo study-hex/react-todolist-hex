@@ -149,6 +149,7 @@ const putTodo = async (todoId: string, data: object): Promise<any> => {
 
 export const api = {
   req,
+  handleError,
   signup,
   login,
   check,
