@@ -132,11 +132,17 @@ function TodoCardBody(props: ITodoCardBodyProps): React.ReactElement {
 
   return (
     <div className="-mt-[2px] flex-1 border-t-[1px] pt-6">
-      <ul className="flex flex-col gap-4">
+      <ul className="flex flex-col gap-4 px-4">
+        {!filterData.length && (
+          <li className="text-center text-xl">
+            <p>目前沒有資料 \(^Д^)/</p>
+          </li>
+        )}
+
         {filterData &&
           filterData.map((todo) => {
             return (
-              <li key={todo.id} className="px-4">
+              <li key={todo.id}>
                 <div className="flex items-center gap-4 border-b-[1px] pb-4">
                   <label htmlFor="todoStatus">
                     <input

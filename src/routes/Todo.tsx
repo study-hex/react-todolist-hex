@@ -9,6 +9,8 @@ import TodoTabs from '../components/TodoTabs';
 import TodoCardBody from '../components/TodoCardBody';
 import TodoNav from '../components/TodoNav';
 
+import ImgEmpty from '../images/empty.webp';
+
 interface ITodoData {
   content: string;
   createTime: number;
@@ -137,33 +139,46 @@ function Todo(): React.ReactElement {
 
         <TodoAddInput handleAddTodo={handleAddTodo} />
 
-        <main className="mx-auto flex min-h-[calc(100vh_-_170px)] max-w-[500px] flex-col rounded-[10px] bg-white text-sm">
-          <TodoTabs isClickTab={isClickTab} setIsClickTab={setIsClickTab} />
+        {!todoData.length ? (
+          <main className="mx-auto flex max-w-[500px] flex-col justify-between gap-4 pt-[60px] text-center">
+            <p className="font-medium">目前尚無待辦事項 (≥o≤)</p>
 
-          <TodoCardBody
-            todoData={todoData}
-            getTodos={getTodos}
-            isClickTab={isClickTab}
-            setIsClickTab={setIsClickTab}
-          />
+            <img
+              src={ImgEmpty}
+              alt="EMPTY"
+              loading="lazy"
+              className="mx-auto w-60"
+            />
+          </main>
+        ) : (
+          <main className="mx-auto flex min-h-[calc(100vh_-_170px)] max-w-[500px] flex-col rounded-[10px] bg-white text-sm">
+            <TodoTabs isClickTab={isClickTab} setIsClickTab={setIsClickTab} />
 
-          <footer className="flex items-center justify-between p-4">
-            <button type="button" onClick={() => setIsClickTab('TODO')}>
-              <span className="mr-[7px]">{haveTodoLength}</span>
-              個待完成項目
-            </button>
+            <TodoCardBody
+              todoData={todoData}
+              getTodos={getTodos}
+              isClickTab={isClickTab}
+              setIsClickTab={setIsClickTab}
+            />
 
-            <button
-              type="button"
-              className={`text-light transition duration-150 ease-linear ${
-                !haveClearLength ? 'cursor-not-allowed' : 'hover:scale-105'
-              }`}
-              onClick={handleClearDoneTodo}
-            >
-              清除已完成項目
-            </button>
-          </footer>
-        </main>
+            <footer className="flex items-center justify-between p-4">
+              <button type="button" onClick={() => setIsClickTab('TODO')}>
+                <span className="mr-[7px]">{haveTodoLength}</span>
+                個待完成項目
+              </button>
+
+              <button
+                type="button"
+                className={`text-light transition duration-150 ease-linear ${
+                  !haveClearLength ? 'cursor-not-allowed' : 'hover:scale-105'
+                }`}
+                onClick={handleClearDoneTodo}
+              >
+                清除已完成項目
+              </button>
+            </footer>
+          </main>
+        )}
       </div>
     </div>
   );
