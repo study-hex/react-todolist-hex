@@ -8,13 +8,13 @@ interface LogoProps {
 
 function Logo({ bgPosition }: LogoProps): React.ReactElement {
   const h1Class = `${bgPosition}
-    w-full overflow-hidden whitespace-nowrap bg-logo bg-[length:316px_46.9px] bg-no-repeat indent-[101%]
+    overflow-hidden whitespace-nowrap bg-logo bg-[length:316px_46.9px] bg-no-repeat indent-[101%]
   `;
 
   return (
     <Link
       to="/login"
-      className="block leading-[3rem] hover:opacity-80"
+      className="inline-block w-full leading-[46.9px] hover:opacity-80"
       title="TODOLIST"
     >
       <h1 className={h1Class}>ONLINE TODO LIST</h1>

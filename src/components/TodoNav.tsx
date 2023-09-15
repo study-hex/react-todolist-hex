@@ -42,7 +42,7 @@ function TodoNav(): React.ReactElement {
 
   return (
     <nav className="flex items-center justify-between gap-10 py-4">
-      <div className="inline-flex items-center">
+      <div className="inline-flex w-[160px] items-center md:w-[316px]">
         <Logo bgPosition={'bg-start'} />
       </div>
 

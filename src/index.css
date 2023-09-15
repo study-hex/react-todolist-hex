@@ -6,14 +6,6 @@
   /* outline: 1px solid #f73; */
 }
 
-input:checked+.custom-check {
-  @apply border-0;
-}
-
-input:checked+.custom-check svg {
-  @apply block;
-}
-
 ::-webkit-scrollbar {
   width: .5rem;
 }
@@ -24,4 +16,22 @@ input:checked+.custom-check svg {
 
   -moz-border-radius: 12px;
   -webkit-border-radius: 12px;
+}
+
+input, button {
+  @apply outline-none;
+}
+
+label {
+  @apply cursor-pointer;
+}
+
+/* end of base */
+
+input:checked+.custom-check {
+  @apply border-0;
+}
+
+input:checked+.custom-check svg {
+  @apply block;
 }

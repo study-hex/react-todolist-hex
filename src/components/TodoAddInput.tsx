@@ -12,7 +12,7 @@ function TodoAddInput(props: ITodoAddInputProps): React.ReactElement {
   const { handleAddTodo } = props;
 
   return (
-    <div className="mx-auto mb-4 flex max-w-[500px] items-center justify-between rounded-lg bg-white py-1 pl-4 pr-1 shadow">
+    <div className="mx-auto mb-4 flex max-w-[500px] items-center justify-between rounded-lg bg-white py-1 pl-4 pr-1 shadow-lg">
       <input
         type="text"
         name="content"
@@ -34,7 +34,7 @@ function TodoAddInput(props: ITodoAddInputProps): React.ReactElement {
 
       <button
         type="button"
-        className="transition-border relative h-10 w-10 rounded-[10px] bg-dark duration-100 hover:border-light disabled:bg-light"
+        className="transition-border relative h-10 w-10 rounded-[10px] bg-dark duration-100 hover:border-light disabled:cursor-not-allowed disabled:bg-light"
         disabled={!newInputTodo.value}
         onClick={() => handleAddTodo(newInputTodo.value.trim())}
       >
