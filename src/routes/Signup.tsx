@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { useForm } from 'react-hook-form';
@@ -30,7 +30,17 @@ function Signup(): React.ReactElement {
     register,
     handleSubmit,
     watch,
-    formState: { errors },
+    formState: {
+      errors,
+      dirtyFields,
+      // isDirty,
+      // touchedFields,
+      // isValid,
+      // isSubmitting,
+      // isSubmitted,
+      // isSubmitSuccessful,
+      // submitCount,
+    },
     reset,
   } = useForm({
     resolver: yupResolver(SignupSchema),
@@ -41,6 +51,9 @@ function Signup(): React.ReactElement {
       confirmPassword: '',
     },
   });
+
+  // console.log({ errors, isDirty, touchedFields, dirtyFields, isValid });
+  // console.log({ isSubmitting, isSubmitted, isSubmitSuccessful, submitCount });
 
   const onSubmitHandler = (data: any) => {
     console.log({ data });
@@ -78,9 +91,17 @@ function Signup(): React.ReactElement {
     // // end of api
   };
 
+  useEffect(() => {
+    const subscription = watch((value, { name, type }) =>
+      // console.log(value, name, type),
+      console.log(),
+    );
+    return () => subscription.unsubscribe();
+  }, [watch]);
+
   return (
     <form
-      className="text-center"
+      className="h-[calc(100vh_-_172px)] w-full overflow-y-scroll text-center scrollbar-thin md:h-full md:overflow-y-hidden"
       id="swal-target"
       onSubmit={handleSubmit(onSubmitHandler)}
     >
@@ -92,8 +113,10 @@ function Signup(): React.ReactElement {
 
           <input
             type="email"
+            id="email"
             placeholder="請輸入 Email"
             className="w-full rounded-[10px] px-4 py-3 font-medium placeholder:text-light"
+            // {...register('email',{})}
             {...register('email')}
             required
           />
@@ -108,6 +131,7 @@ function Signup(): React.ReactElement {
 
           <input
             type="text"
+            id="nickname"
             placeholder="請輸入暱稱"
             className="w-full rounded-[10px] px-4 py-3 font-medium placeholder:text-light"
             {...register('nickname')}
@@ -124,6 +148,7 @@ function Signup(): React.ReactElement {
 
           <input
             type="password"
+            id="password"
             placeholder="請輸入密碼"
             className="w-full rounded-[10px] px-4 py-3 font-medium placeholder:text-light"
             {...register('password')}
@@ -135,11 +160,12 @@ function Signup(): React.ReactElement {
       </div>
 
       <div className="mb-3 text-left">
-        <label htmlFor="confirm-password" className="text-sm font-bold">
+        <label htmlFor="confirmPassword" className="text-sm font-bold">
           <p className="mb-1">再次輸入密碼</p>
 
           <input
             type="password"
+            id="confirmPassword"
             placeholder="請再次輸入密碼"
             className="w-full rounded-[10px] px-4 py-3 font-medium placeholder:text-light"
             {...register('confirmPassword')}
@@ -152,15 +178,11 @@ function Signup(): React.ReactElement {
 
       <button
         type="submit"
-        className={`mb-6 rounded-[10px] px-12 py-3 font-bold text-white ${
-          !errors.confirmPassword?.message &&
-          watch('nickname') &&
-          watch('email') &&
-          watch('password') &&
-          watch('confirmPassword')
-            ? 'cursor-pointer bg-dark'
-            : 'cursor-not-allowed bg-light'
-        }`}
+        className={`mb-6 cursor-pointer rounded-[10px] bg-dark px-12 py-3 font-bold text-white  
+          disabled:cursor-not-allowed disabled:bg-light`}
+        disabled={
+          Object.keys(dirtyFields).length < 4 || Object.keys(errors).length > 0
+        }
       >
         註冊帳號
       </button>
@@ -171,5 +193,6 @@ function Signup(): React.ReactElement {
     </form>
   );
 }
+// end of Signup
 
 export default Signup;

@@ -1,4 +1,4 @@
-import React, { useState } from 'react';
+import React from 'react';
 import { Link, useNavigate } from 'react-router-dom';
 
 import { useForm } from 'react-hook-form';
@@ -23,8 +23,8 @@ function Login(): React.ReactElement {
   const {
     register,
     handleSubmit,
-    watch,
-    formState: { errors },
+    // watch,
+    formState: { errors, dirtyFields },
     reset,
   } = useForm({
     resolver: yupResolver(LoginSchema),
@@ -86,6 +86,7 @@ function Login(): React.ReactElement {
 
           <input
             type="email"
+            id="email"
             placeholder="請輸入 Email"
             className="w-full rounded-[10px] px-4 py-3 font-medium placeholder:text-light"
             {...register('email')}
@@ -102,6 +103,7 @@ function Login(): React.ReactElement {
 
           <input
             type="password"
+            id="password"
             placeholder="請輸入密碼"
             className="w-full rounded-[10px] px-4 py-3 font-medium placeholder:text-light"
             {...register('password')}
@@ -114,11 +116,11 @@ function Login(): React.ReactElement {
 
       <button
         type="submit"
-        className={`mb-6 rounded-[10px] px-12 py-3 font-bold text-white ${
-          !errors.password?.message && watch('email') && watch('password')
-            ? 'cursor-pointer bg-dark'
-            : 'cursor-not-allowed bg-light'
-        }`}
+        className={`mb-6 cursor-pointer rounded-[10px] bg-dark px-12 py-3 font-bold text-white  
+          disabled:cursor-not-allowed disabled:bg-light`}
+        disabled={
+          Object.keys(dirtyFields).length < 2 || Object.keys(errors).length > 0
+        }
       >
         登入
       </button>
@@ -129,5 +131,6 @@ function Login(): React.ReactElement {
     </form>
   );
 }
+// end of Login
 
 export default Login;

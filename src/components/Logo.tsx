@@ -13,7 +13,7 @@ function Logo({ bgPosition }: LogoProps): React.ReactElement {
 
   return (
     <Link
-      to="/signup"
+      to="/login"
       className="block leading-[3rem] hover:opacity-80"
       title="TODOLIST"
     >
