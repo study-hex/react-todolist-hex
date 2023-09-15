@@ -44,14 +44,6 @@ function Todo(): React.ReactElement {
     };
 
     api.postTodo(data).then((res) => {
-      if (!res?.status) {
-        Toast.fire({
-          icon: 'warning',
-          title: '請重新操作',
-        });
-      }
-      // end of !res?.status
-
       if (res?.status) {
         const msg = res.message || '新增成功';
 
@@ -141,7 +133,7 @@ function Todo(): React.ReactElement {
         <TodoAddInput handleAddTodo={handleAddTodo} />
 
         {!todoData.length ? (
-          <main className="mx-auto flex max-w-[500px] flex-col justify-between gap-4 pt-[60px] text-center">
+          <div className="mx-auto flex max-w-[500px] flex-col justify-between gap-4 pt-[60px] text-center">
             <p className="font-medium">目前尚無待辦事項 (≥o≤)</p>
 
             <img
@@ -150,16 +142,15 @@ function Todo(): React.ReactElement {
               loading="lazy"
               className="mx-auto w-60"
             />
-          </main>
+          </div>
         ) : (
-          <main className="mx-auto flex min-h-[calc(100vh_-_170px)] max-w-[500px] flex-col rounded-[10px] bg-white text-sm">
+          <div className="mx-auto flex min-h-[calc(100vh_-_190px)] max-w-[500px] flex-col rounded-[10px] bg-white text-sm shadow-2xl">
             <TodoTabs isClickTab={isClickTab} setIsClickTab={setIsClickTab} />
 
             <TodoCardBody
               todoData={todoData}
               getTodos={getTodos}
               isClickTab={isClickTab}
-              setIsClickTab={setIsClickTab}
             />
 
             <footer className="flex items-center justify-between p-4">
@@ -178,7 +169,7 @@ function Todo(): React.ReactElement {
                 清除已完成項目
               </button>
             </footer>
-          </main>
+          </div>
         )}
       </div>
     </div>

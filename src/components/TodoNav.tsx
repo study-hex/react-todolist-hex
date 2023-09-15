@@ -11,14 +11,6 @@ function TodoNav(): React.ReactElement {
 
   const handleLogout = () => {
     api.logout().then((res: any) => {
-      if (!res?.status) {
-        Toast.fire({
-          icon: 'warning',
-          title: '請重新操作',
-        });
-      }
-      // end of !res?.status
-
       if (res?.status) {
         const msg = res.message || '登出成功';
 
@@ -35,6 +27,14 @@ function TodoNav(): React.ReactElement {
         });
       }
       // end of res?.status
+
+      // if (!res?.status) {
+      //   Toast.fire({
+      //     icon: 'warning',
+      //     title: '請重新操作',
+      //   });
+      // }
+      // // end of !res?.status
     });
     // end of api
   };
@@ -42,7 +42,7 @@ function TodoNav(): React.ReactElement {
 
   return (
     <nav className="flex items-center justify-between gap-10 py-4">
-      <div className="w-4/5">
+      <div className="inline-flex items-center">
         <Logo bgPosition={'bg-start'} />
       </div>
 

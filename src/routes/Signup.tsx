@@ -56,7 +56,7 @@ function Signup(): React.ReactElement {
   // console.log({ isSubmitting, isSubmitted, isSubmitSuccessful, submitCount });
 
   const onSubmitHandler = (data: any) => {
-    console.log({ data });
+    // console.log({ data });
     // console.log(watch('email'));
     const sendData = {
       email: data.email,
@@ -65,13 +65,7 @@ function Signup(): React.ReactElement {
     };
 
     api.signup(sendData).then((res: any) => {
-      if (!res?.status) {
-        Toast.fire({
-          icon: 'warning',
-          title: '請重新操作',
-        });
-      }
-      // end of !res?.status
+      reset();
 
       if (res?.status) {
         Toast.fire({
@@ -80,13 +74,19 @@ function Signup(): React.ReactElement {
           didClose: () => {
             setTimeout(() => {
               navigate('/login');
-            }, 400);
+            }, 100);
           },
         });
       }
       // end of res?.status
 
-      reset();
+      // if (!res?.status) {
+      //   Toast.fire({
+      //     icon: 'warning',
+      //     title: '請重新操作',
+      //   });
+      // }
+      // // end of !res?.status
     });
     // // end of api
   };

@@ -38,16 +38,10 @@ function Login(): React.ReactElement {
     // setTimeout(() => {
     //   alert(JSON.stringify(values, null, 2));
     // }, 400);
+    // console.log({ data });
 
-    console.log({ data });
     api.login(data).then((res: any) => {
-      if (!res?.status) {
-        Toast.fire({
-          icon: 'warning',
-          title: '請重新操作',
-        });
-      }
-      // end of !res?.status
+      reset();
 
       if (res?.status) {
         api.req.defaults.headers.common['Authorization'] = res?.token;
@@ -67,7 +61,13 @@ function Login(): React.ReactElement {
       }
       // end of res?.status
 
-      reset();
+      // if (!res?.status) {
+      //   Toast.fire({
+      //     icon: 'warning',
+      //     title: '請重新操作',
+      //   });
+      // }
+      // // end of !res?.status
     });
     // end of api
   };

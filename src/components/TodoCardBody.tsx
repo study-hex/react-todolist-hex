@@ -16,12 +16,11 @@ interface ITodoCardBodyProps {
   todoData: ITodoData[];
   getTodos: () => void;
   isClickTab: string;
-  setIsClickTab: (isClickTab: string) => void;
 }
 // end of interface
 
 function TodoCardBody(props: ITodoCardBodyProps): React.ReactElement {
-  const { todoData, getTodos, isClickTab, setIsClickTab } = props;
+  const { todoData, getTodos, isClickTab } = props;
 
   const [filterData, setFilterData] = useState<ITodoData[]>([]);
 
@@ -30,14 +29,6 @@ function TodoCardBody(props: ITodoCardBodyProps): React.ReactElement {
 
   const handleRemoveTodo = (todo: ITodoData) => {
     api.deleteTodo(todo.id).then((res) => {
-      if (!res?.status) {
-        Toast.fire({
-          icon: 'warning',
-          title: '請重新操作',
-        });
-      }
-      // end of !res?.status
-
       if (res?.status) {
         const msg = res.message || '刪除成功';
 
@@ -56,14 +47,6 @@ function TodoCardBody(props: ITodoCardBodyProps): React.ReactElement {
 
   const handleToggleTodo = (todo: ITodoData) => {
     api.patchTodo(todo.id).then((res) => {
-      if (!res?.status) {
-        Toast.fire({
-          icon: 'warning',
-          title: '請重新操作',
-        });
-      }
-      // end of !res?.status
-
       if (res?.status) {
         const msg = res.message || '編輯成功';
 
@@ -86,14 +69,6 @@ function TodoCardBody(props: ITodoCardBodyProps): React.ReactElement {
     };
 
     api.putTodo(isEditId, data).then((res) => {
-      if (!res?.status) {
-        Toast.fire({
-          icon: 'warning',
-          title: '請重新操作',
-        });
-      }
-      // end of !res?.status
-
       if (res?.status) {
         const msg = res.message || '編輯成功';
 

@@ -1,5 +1,5 @@
 import React, { useEffect } from 'react';
-import { Link, Outlet, useNavigate } from 'react-router-dom';
+import { Outlet, useNavigate } from 'react-router-dom';
 
 import { useAuth } from '../contexts/AuthContext';
 import { api } from '../helpers/api';
@@ -12,20 +12,12 @@ import ImgHero from '../images/hero.webp';
 function PublicLayout(): React.ReactElement {
   const { token } = useAuth();
   const navigate = useNavigate();
+
   const bgPosition = 'bg-center';
 
   useEffect(() => {
     if (token) {
       api.check(token).then((res: any) => {
-        if (!res?.status) {
-          return;
-          // Toast.fire({
-          //   icon: 'warning',
-          //   title: '請重新操作',
-          // });
-        }
-        // end of !res?.status
-
         if (res?.status) {
           Toast.fire({
             icon: 'success',
@@ -38,6 +30,15 @@ function PublicLayout(): React.ReactElement {
           });
         }
         // end of res?.status
+
+        // if (!res?.status) {
+        //   return;
+        //   // Toast.fire({
+        //   //   icon: 'warning',
+        //   //   title: '請重新操作',
+        //   // });
+        // }
+        // // end of !res?.status
       });
       // end of api
     }
