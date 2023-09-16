@@ -17,6 +17,7 @@ interface ITodoData {
   id: string;
   status: boolean;
 }
+// end of interface
 
 function Todo(): React.ReactElement {
   const { token } = useAuth();
@@ -88,10 +89,6 @@ function Todo(): React.ReactElement {
             title: msg,
           });
         });
-      })
-      .catch((error) => {
-        // console.error('Error:::', error);
-        api.handleError(error);
       })
       .finally(() => {
         getTodos();
