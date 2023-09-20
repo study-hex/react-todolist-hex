@@ -1,4 +1,9 @@
 import { useState, useMemo, useEffect, useContext, createContext } from 'react';
+import {
+  saveTokenToCookie,
+  removeTokenFromCookie,
+  getTokenFromCookie,
+} from '../helpers/CookieService';
 
 interface IAuthContextData {
   token: string;
@@ -18,33 +23,23 @@ export function AuthProvider({ children }: IAuthProviderProps) {
   const [token, setToken] = useState<string>('');
 
   const saveToken = (resToken: string) => {
-    // console.log('AUTH_TOKEN:::', resToken);
     setToken(resToken);
-    // localStorage.setItem('AUTH_TOKEN', resToken);
-
-    const tomorrow = new Date();
-    tomorrow.setDate(tomorrow.getDate() + 1);
-    tomorrow.setHours(1, 0, 0, 0);
-
-    document.cookie = `hexschoolTodo=${resToken}; expires=${tomorrow.toUTCString()}`;
+    saveTokenToCookie(resToken);
   };
   // end of saveToken(resToken)
 
   function removeToken() {
-    document.cookie =
-      'hexschoolTodo=; expires=Thu, 01 Jan 1970 00:00:00 GMT; path=/';
     setToken('');
+    removeTokenFromCookie();
   }
   // end of removeToken
 
   useEffect(() => {
-    const cookieValue = document.cookie
-      .split('; ')
-      .find((row) => row.startsWith('hexschoolTodo='))
-      ?.split('=')[1];
+    const cookieValue = getTokenFromCookie();
 
     if (cookieValue) {
-      setToken(cookieValue);
+      // console.log('cookieValue:::', cookieValue);
+      saveToken(cookieValue);
     }
   }, []);
   // end of useEffect()
